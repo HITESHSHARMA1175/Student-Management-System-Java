@@ -56,29 +56,21 @@ java StudentManagementSystem
 Enter choice:
 
 
-🧠 Concepts Used
+🧠 Concepts Used:
+
 ✔ Object-Oriented Programming
-
 Class & Object
-
 Constructors
-
 Encapsulation
-
 ✔ Java Collections
-
 ArrayList for storing student records
-
 ✔ Control Flow
-
 Loops
-
 Switch-case
-
 User Input Validation
 
 
-📘 Code Overview
+📘 Code Overview:
 
 Student.java
 Contains the student model (roll, name, course)
@@ -86,21 +78,16 @@ Contains the student model (roll, name, course)
 StudentManagementSystem.java
 Contains menu, logic, and CRUD functionality
 
-🎯 Learning Outcomes
+🎯 Learning Outcomes:
 
 By building this project, you learn:
-
 How to take input from the user
-
 How to store and manage dynamic records
-
 How to perform CRUD operations
-
 How to structure real-world Java applications
 
 
 🤝 Author
-
-Your HITESH SHARMA
+HITESH SHARMA
 Student | Java Developer
 Feel free to contribute or suggest improvements!
