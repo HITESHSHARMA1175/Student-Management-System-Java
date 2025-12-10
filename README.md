@@ -159,18 +159,6 @@ Option 2: VS Code Live Server
 ```
 Right-click → Open With Live Server
 ```
-
----
-
-# 🖥️ Screenshots (Add yours here)
-```
-📌 Screenshot 1 – Frontend UI  
-📌 Screenshot 2 – Add Student  
-📌 Screenshot 3 – Update Student  
-📌 Screenshot 4 – Database View  
-📌 Screenshot 5 – Java Console Output  
-```
-
 ---
 
 # 🏗️ System Architecture
