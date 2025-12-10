@@ -1,106 +1,235 @@
-# Student Management System (Java Console Project)
+# Student Management System  
+A combined **Java Console Application + Full-Stack Web Application** to manage student data using **Java, HTML, JavaScript, Node.js, Express.js, and SQLite Database**.
 
-The **Student Management System** is a simple console-based Java application that allows users to manage student records.  
-It demonstrates the use of **Core Java, OOP Concepts, ArrayList, and CRUD operations**.
+This project demonstrates:
 
----
-
-## 🚀 Features
-
-- ➕ **Add Student**  
-- 📋 **View All Students**  
-- 🔍 **Search Student by Roll Number**  
-- ❌ **Delete Student**  
-- 🚪 **Exit Application**
+- Core Java & OOP Concepts  
+- CRUD Operations  
+- ArrayList Data Structure  
+- REST API (Express.js)  
+- Web Frontend (HTML + JS)  
+- SQLite Database Integration  
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Project Overview
 
-- **Java (JDK 8+)**
-- **OOP Concepts**
-- **ArrayList**
-- **Scanner (for user input)**
+The **Student Management System** allows users to:
 
----
+### **Java Console Version**
+- Add a Student  
+- View All Students  
+- Search Student by Roll Number  
+- Delete Student  
+- Exit Application  
 
-## 📂 Project Structure
-
-StudentManagementSystem.java
-Student.class
-StudentManagementSystem.class
+This was the original version created using **Java + ArrayList**.
 
 ---
 
-## ▶️ How to Run
+## 🌐 Web Application Version (Frontend + Backend)
 
-1. Open terminal in the project folder  
-2. Compile the program:
+To upgrade the project, a modern **full-stack version** is added with:
 
-```bash
+- HTML + CSS + JavaScript frontend  
+- Node.js backend (Express.js)
+- SQLite database for persistent storage  
+- Full CRUD functionality from browser  
+
+Users can perform the following operations directly from the browser:
+
+### ✔ Add Student  
+### ✔ View Students  
+### ✔ Search by Roll  
+### ✔ Update Student  
+### ✔ Delete Student  
+
+---
+
+# 📂 Project Structure
+
+```
+Student-Management-System-Java/
+│
+├── web-demo/
+│   ├── backend/
+│   │   ├── server.js
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   └── students.db   (ignored in Git)
+│   │
+│   └── frontend/
+│       ├── index.html
+│       └── (static files if added)
+│
+├── StudentManagementSystem.java   (core Java console app)
+├── README.md
+└── .gitignore
+```
+
+---
+
+# 🛠️ Tech Stack
+
+### **Frontend**
+- HTML5
+- CSS3
+- JavaScript (Fetch API)
+
+### **Backend**
+- Node.js  
+- Express.js  
+- SQLite Database  
+
+### **Java Console Version**
+- Java  
+- OOP  
+- ArrayList  
+- Loops & Conditions  
+
+---
+
+# 🔌 REST API Documentation
+
+### **GET** `/students`
+Returns all students.
+
+### **GET** `/students/:roll`
+Returns a student by roll number.
+
+### **POST** `/students`
+Adds a new student.  
+Body:
+```json
+{
+  "roll": 101,
+  "name": "Hitesh Sharma",
+  "course": "BTech CSE"
+}
+```
+
+### **PUT** `/students/:roll`
+Updates name & course of a student.  
+Body:
+```json
+{
+  "name": "New Name",
+  "course": "New Course"
+}
+```
+
+### **DELETE** `/students/:roll`
+Deletes a student by roll.
+
+---
+
+# ▶️ How to Run the Java Console App
+
+```
 javac StudentManagementSystem.java
-
-
-Run the program:
 java StudentManagementSystem
+```
 
+---
 
-📸 Sample Output:
+# ▶️ How to Run the Backend (Node.js + SQLite)
 
-===== STUDENT MANAGEMENT SYSTEM =====
-1. Add Student
-2. View All Students
-3. Search Student
-4. Delete Student
-5. Exit
-Enter choice:
+```
+cd web-demo/backend
+npm install
+node server.js
+```
 
+Server will run at:
 
-🧠 Concepts Used
-✔ Object-Oriented Programming
+```
+http://localhost:3000
+```
 
-Class & Object
+---
 
-Constructors
+# ▶️ How to Run the Frontend
 
-Encapsulation
+Option 1: Open directly in browser  
+```
+web-demo/frontend/index.html
+```
 
-✔ Java Collections
+Option 2: VS Code Live Server  
+```
+Right-click → Open With Live Server
+```
 
-ArrayList for storing student records
+---
 
-✔ Control Flow
+# 🖥️ Screenshots (Add yours here)
+```
+📌 Screenshot 1 – Frontend UI  
+📌 Screenshot 2 – Add Student  
+📌 Screenshot 3 – Update Student  
+📌 Screenshot 4 – Database View  
+📌 Screenshot 5 – Java Console Output  
+```
 
-Loops
+---
 
-Switch-case
+# 🏗️ System Architecture
 
-User Input Validation
+```
+Frontend (HTML + JS)
+      │
+      ▼
+REST API (Node.js + Express)
+      │
+      ▼
+SQLite Database
+```
 
+Java version works separately as an offline console-based module.
 
-📘 Code Overview
+---
 
-Student.java
-Contains the student model (roll, name, course)
+# ⭐ Features Summary
 
-StudentManagementSystem.java
-Contains menu, logic, and CRUD functionality
+### **Java Version**
+- Simple, fast console app  
+- Demonstrates OOP, CRUD, ArrayList  
 
-🎯 Learning Outcomes
+### **Web Version**
+- Modern UI  
+- Update & Delete support  
+- Real database (SQLite)  
+- REST API  
+- Fully modular structure  
 
-By building this project, you learn:
+---
 
-How to take input from the user
+# 📘 Why This Project Is Special
 
-How to store and manage dynamic records
+- Shows **both** Java and Full-Stack skills  
+- Ideal for training submission / viva  
+- Clean and professional repository  
+- Good for resume & GitHub portfolio  
+- Demonstrates real CRUD system end-to-end  
 
-How to perform CRUD operations
+---
 
-How to structure real-world Java applications
+# 👨‍💻 Author
 
+**Hitesh Sharma**  
+B.Tech CSE  
+Full Stack Developer | Java | MERN | Python  
 
-🤝 Author
+GitHub: https://github.com/HITESHSHARMA1175  
+LinkedIn: https://www.linkedin.com/in/hiteshsharma01  
 
-Your HITESH SHARMA
-Student | Java Developer
-Feel free to contribute or suggest improvements!
+---
+
+# 🎉 Conclusion
+
+This project demonstrates a complete learning journey:
+
+**Java → Web Frontend → Backend → Database → REST API → GitHub Version Control**
+
+A perfect full-stack training project.
+
