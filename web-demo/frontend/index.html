@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Student Management</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 20px; max-width: 900px; }
+    input, button { padding: 8px; margin: 4px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .muted { color: #666; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h2>Student Management (Frontend)</h2>
+
+  <div class="row">
+    <input id="roll" placeholder="Roll No" type="number" />
+    <input id="name" placeholder="Name" />
+    <input id="course" placeholder="Course" />
+    <button onclick="addStudent()">Add Student</button>
+  </div>
+  
+  <!-- Update form -->
+  <div class="row">
+    <input id="editRoll" placeholder="Roll No (read only)" type="number" disabled />
+    <input id="editName" placeholder="New Name" />
+    <input id="editCourse" placeholder="New Course" />
+    <button onclick="updateStudent()">Update Student</button>
+    <span class="muted">Click "Edit" in the table to load values here</span>
+  </div>
+
+<hr>
+
+  <div class="row">
+    <input id="searchRoll" placeholder="Search roll" type="number" />
+    <button onclick="searchStudent()">Search</button>
+    <button onclick="loadAll()">Refresh List</button>
+  </div>
+
+  <table id="table">
+    <thead>
+      <tr><th>Roll</th><th>Name</th><th>Course</th><th>Action</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+const API = 'http://localhost:3000';
+
+// helper to safely escape values when inserting into onclick attributes
+function jsEscape(str) {
+  return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+
+async function loadAll() {
+  try {
+    const res = await fetch(API + '/students');
+    if (!res.ok) throw new Error('Failed to load');
+    const data = await res.json();
+    const tbody = document.querySelector('#table tbody');
+    tbody.innerHTML = '';
+    data.forEach(s => {
+      const tr = document.createElement('tr');
+
+      // Use data attributes instead of inline unescaped strings to avoid breaking on quotes
+      tr.innerHTML = `
+        <td>${s.roll}</td>
+        <td>${s.name}</td>
+        <td>${s.course}</td>
+        <td>
+          <button data-roll="${s.roll}" data-name="${jsEscape(s.name)}" data-course="${jsEscape(s.course)}" class="edit-btn">Edit</button>
+          <button data-roll="${s.roll}" class="del-btn">Delete</button>
+        </td>`;
+
+      tbody.appendChild(tr);
+    });
+
+    // attach listeners (safer than inline onclick)
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const el = e.currentTarget;
+        // note: data attributes were escaped earlier for safety; decode if necessary
+        const roll = parseInt(el.getAttribute('data-roll'));
+        const name = el.getAttribute('data-name') || '';
+        const course = el.getAttribute('data-course') || '';
+        // unescape backslashes used during insertion
+        editStudent(roll, name.replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, '\\'), course.replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, '\\'));
+      });
+    });
+
+    document.querySelectorAll('.del-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const roll = parseInt(e.currentTarget.getAttribute('data-roll'));
+        deleteStudent(roll);
+      });
+    });
+
+  } catch (err) {
+    alert('Could not load students. Make sure backend is running.');
+    console.error(err);
+  }
+}
+
+async function addStudent() {
+  const roll = parseInt(document.getElementById('roll').value);
+  const name = document.getElementById('name').value.trim();
+  const course = document.getElementById('course').value.trim();
+  if (!roll || !name || !course) return alert('Fill all fields');
+
+  try {
+    const res = await fetch(API + '/students', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({roll, name, course})
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      return alert(err.error || 'Error adding student');
+    }
+    alert('Student added');
+    document.getElementById('roll').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('course').value = '';
+    loadAll();
+  } catch (err) {
+    alert('Error connecting to backend.');
+    console.error(err);
+  }
+}
+
+async function searchStudent() {
+  const r = parseInt(document.getElementById('searchRoll').value);
+  if (!r) return alert('Enter roll');
+  const res = await fetch(API + '/students/' + r);
+  if (!res.ok) return alert('Not found');
+  const s = await res.json();
+  alert(`Found: Roll ${s.roll}, ${s.name}, ${s.course}`);
+}
+
+async function deleteStudent(roll){
+  if(!confirm('Delete student ' + roll + '?')) return;
+  const res = await fetch(API + '/students/' + roll, { method: 'DELETE' });
+  if (!res.ok) return alert('Delete failed');
+  alert('Deleted');
+  loadAll();
+}
+
+/* ---------- EDIT / UPDATE ---------- */
+
+// fill the update form with selected student data
+function editStudent(roll, name, course) {
+  document.getElementById('editRoll').value = roll;
+  document.getElementById('editName').value = name;
+  document.getElementById('editCourse').value = course;
+  // optionally scroll to update form
+  document.getElementById('editName').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// send update to backend
+async function updateStudent() {
+  const roll = parseInt(document.getElementById('editRoll').value);
+  const name = document.getElementById('editName').value.trim();
+  const course = document.getElementById('editCourse').value.trim();
+
+  if (!roll) return alert('No student selected. Click Edit first.');
+  if (!name || !course) return alert('Fill all update fields');
+
+  try {
+    const res = await fetch(API + '/students/' + roll, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ name, course })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(()=>({error:'Update failed'}));
+      return alert(err.error || 'Update failed');
+    }
+
+    alert('Student updated successfully!');
+    // clear update fields
+    document.getElementById('editRoll').value = '';
+    document.getElementById('editName').value = '';
+    document.getElementById('editCourse').value = '';
+    loadAll(); // refresh list
+  } catch (err) {
+    alert('Error connecting to backend.');
+    console.error(err);
+  }
+}
+
+/* ---------- end edit/update ---------- */
+
+loadAll();
+</script>
+</body>
+</html>
