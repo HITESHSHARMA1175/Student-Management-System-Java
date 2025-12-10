@@ -1,0 +1,30 @@
+# Ignore class files
+*.class
+
+# Ignore temporary files
+*.log
+*.tmp
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Java output folders
+bin/
+out/
+target/
+
+
+# Node
+node_modules/
+
+# DB file (optional: you may keep DB out of repo)
+*.db
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
